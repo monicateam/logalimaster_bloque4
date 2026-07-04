@@ -27,12 +27,34 @@ CLASS lhc_Travel DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS validateStatus FOR VALIDATE ON SAVE
       IMPORTING keys FOR Travel~validateStatus.
+    METHODS setTravelNumber FOR DETERMINE ON SAVE
+      IMPORTING keys FOR Travel~setTravelNumber.
 
 ENDCLASS.
 
 CLASS lhc_Travel IMPLEMENTATION.
 
   METHOD get_instance_features.
+    read ENTITIES of zi_travel_0341 in local mode
+     entity Travel
+     fields ( TravelID OverallStatus )
+     with corresponding #(  keys )
+     RESULT DATa(lt_travels)
+     FAILED failed.
+
+     result = VALUE #(  for ls_travel IN lt_travels (
+        %tky = ls_travel-%tky
+        %field-TravelID = if_abap_behv=>fc-f-read_only
+         %field-OverallStatus = if_abap_behv=>fc-f-read_only
+         %action-acceptTravel = cond #(  WHEN ls_travel-OverallStatus = 'A'
+                                    THEN if_abap_behv=>fc-o-disabled
+                                    ELSE if_abap_behv=>fc-o-enabled )
+         %action-rejectTravel = cond #(  WHEN ls_travel-OverallStatus = 'X'
+                                    THEN if_abap_behv=>fc-o-disabled
+                                    ELSE if_abap_behv=>fc-o-enabled )
+     ) ).
+
+
   ENDMETHOD.
 
   METHOD get_instance_authorizations.
@@ -57,6 +79,64 @@ CLASS lhc_Travel IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD createTravelByTemplate.
+
+    READ ENTITIES of zi_travel_0341 IN LOCAL MODE
+        ENTITY Travel
+        FIELDS ( TravelID AgencyID CustomerID BookingFee TotalPrice CurrencyCode )
+        with value #( for row_key in keys ( %key = row_key-%key ) )
+        RESULT data(lt_read_entity_travel)
+        FAILED failed
+        REPORTED reported.
+
+        check failed is INITIAL.
+
+    DATA lt_create_travel type table for create zi_travel_0341\\Travel.
+
+    SELECT max( travel_id ) from ztb_travel_0341
+    INTO @DATA(lv_travel_id).
+
+    data(lv_today) = cl_abap_context_info=>get_system_date( ).
+
+    lt_create_travel = value #( FOR ls_create_row IN lt_read_entity_travel index into idx (
+        %cid = |{ lv_travel_id + idx }|
+        travelid = lv_travel_id + idx
+        AgencyID = ls_create_row-AgencyID
+        customerID = ls_create_row-CustomerID
+        begindate = lv_today
+        enddate = lv_today + 30
+        bookingfee = ls_create_row-BookingFee
+        totalprice = ls_create_row-TotalPrice
+        CurrencyCode = ls_create_row-CurrencyCode
+        description = 'MSC 0341'
+        OverallStatus = 'O'
+    ) ).
+
+    MODIFY ENTITIES OF zi_travel_0341 IN LOCAL MODE
+        ENTITY travel
+        create fields (
+            travelid
+            AgencyID
+            customerID
+            begindate
+            enddate
+            BookingFee
+            totalprice
+            currencycode
+            description
+            overallstatus
+        )
+        with lt_create_travel
+        mapped mapped
+        failed failed
+        reported reported.
+
+    result = value #( for ls_result_row in lt_create_travel INDEX into idx
+    (
+        %cid_ref = keys[ idx ]-%cid_ref
+        %tky = keys[ idx ]-%tky
+        %param = CORRESPONDING #( ls_result_row )
+     ) ).
+
   ENDMETHOD.
 
   METHOD rejectTravel.
@@ -173,6 +253,27 @@ CLASS lhc_Travel IMPLEMENTATION.
                              %element-customerid = if_abap_behv=>mk-on ) TO REPORTED-travel.
         ENDIF.
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD setTravelNumber.
+    READ ENTITIES OF zi_travel_0341 IN LOCAL MODE
+        ENTITY travel
+        FIELDS (  TravelId )
+        with corresponding #(  keys )
+        RESULT DATA(lt_travels).
+        DELETE lt_travels WHERE TravelID is not initial.
+        CHECK lt_travels IS NOT INITIAL.
+
+        SELECT SINGLE FROM ztb_travel_0341
+            FIELDS max( travel_id ) INTO @DATA(lv_max_travelid).
+
+        MODIFY entities of zi_travel_0341 IN LOCAL MODE
+            ENTITY Travel
+            UPDATE FIELDS ( TravelID )
+            WITH VALUE #( FOR ls_travels IN lt_travels INDEX INTO i (
+                %tky = ls_travels-%tky
+                Travelid = lv_max_travelid + i
+            ) ).
   ENDMETHOD.
 
 ENDCLASS.

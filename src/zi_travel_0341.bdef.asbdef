@@ -15,7 +15,7 @@ etag master LastChangedAt
   delete;
   field ( mandatory ) AgencyID, OverallStatus, BookingFee, CurrencyCode;
   field ( readonly ) LastChangedAt, LastChangedBy, CreatedBy, CreatedAt;
-  field ( features : instance ) TravelID;
+  field ( features : instance ) TravelID, OverallStatus;
   association _Booking { create; with draft; }
   association _Logs {  }
 
@@ -29,9 +29,17 @@ etag master LastChangedAt
   action ( features : instance ) rejectTravel result [1] $self;
   action createTravelByTemplate result [1] $self;
 
-  validation validateCustomer on save { field CustomerID; }
-  validation validateDates on save { field BeginDate, EndDate; }
-  validation validateStatus on save { field OverallStatus; }
+
+  determination setTravelNumber on save { create; }
+
+  validation validateCustomer on save { create; field CustomerID; }
+  determine action validateCustomerID { validation validateCustomer; }
+
+  validation validateDates on save { create; field BeginDate, EndDate; }
+  determine action validateDateRange { validation validateDates; }
+
+  validation validateStatus on save { create; field OverallStatus; }
+  determine action validateStatusID { validation validateStatus; }
 
   mapping for ztb_travel_0341
     {
