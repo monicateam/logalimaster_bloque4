@@ -11,7 +11,7 @@
         value: 'BookingDate'
     }
 }
-annotate entity ZI_BOOKING_0341
+annotate entity ZC_BOOKING_0341
     with 
 {
     @UI.facet: [ {

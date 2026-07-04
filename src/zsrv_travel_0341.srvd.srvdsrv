@@ -1,8 +1,7 @@
 @EndUserText.label: 'Service definition 0341'
 define service ZSRV_TRAVEL_0341 {
-  expose ZI_TRAVEL_0341;
-  expose ZI_BOOKING_0341;
-  expose ZI_BOOKING_SUPPL_0341;
-  expose ZI_LOG_0341;
   expose ZC_TRAVEL_0341;
+  expose ZC_BOOKING_0341;
+  expose ZC_BOOKSUPL_0341;
+  expose ZC_LOG_0341;
 }

@@ -17,7 +17,7 @@ etag master LastChangedAt
   field ( readonly ) LastChangedAt, LastChangedBy, CreatedBy, CreatedAt;
   field ( features : instance ) TravelID;
   association _Booking { create; with draft; }
-  association _Logs { create; }
+  association _Logs {  }
 
   draft action Resume;
   draft action Edit;
@@ -111,7 +111,7 @@ etag master LastChangedAt
   }
 }
 
-define behavior for ZI_LOG_0341 //alias <alias_name>
+define behavior for ZI_LOG_0341 alias Log
 implementation in class zbp_i_travellog_0341 unique
 persistent table ztb_log_0341_d
 draft table ztb_log_0341_d
@@ -119,11 +119,9 @@ lock dependent by _TravelHeader
 authorization dependent by _TravelHeader
 etag master CreatedAt
 {
-  update;
-  delete;
   field ( numbering: managed ) ChangeID;
   field ( readonly ) TravelId, createdat, ChangedFieldName, ChangingOperation, UserMod, ChangedValue;
-  association _TravelHeader;
+  association _TravelHeader{ with draft; }
 
   mapping for ztb_log_0341  {
     changeid = change_id;

@@ -11,7 +11,7 @@
         value: 'TravelID'
     }
 }
-annotate entity ZI_LOG_0341
+annotate entity ZC_LOG_0341
     with 
 {
     @UI.facet: [ {

@@ -1,6 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Booking projection view'
 @Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
 define view entity ZC_BOOKING_0341 as projection on ZI_BOOKING_0341
 {
     key TravelID,
@@ -17,7 +18,7 @@ define view entity ZC_BOOKING_0341 as projection on ZI_BOOKING_0341
     LastChangedAt,
     /* Associations */
     _BookingStatus,
-    _BookingSupplement: redirected to composition child zc_booksupl_0341,
+    _BookingSupplement: redirected to composition child ZC_BOOKSUPL_0341,
     _Carrier,
     _Connection,
     _Currency,

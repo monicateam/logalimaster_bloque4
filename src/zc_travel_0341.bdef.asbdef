@@ -19,7 +19,7 @@ define behavior for ZC_TRAVEL_0341 alias Travel
   use action createTravelByTemplate;
 
   use association _Booking { create; with draft; }
-
+  use association _Logs { }
 }
 
 define behavior for ZC_BOOKING_0341 alias Booking
@@ -37,4 +37,8 @@ define behavior for ZC_booksupl_0341 alias BookingSupplement {
 
     use association _TravelHeader { with draft; }
     use association _Booking { with draft; }
+}
+
+define behavior for ZC_log_0341 alias Logs {
+    use association _TravelHeader {  }
 }

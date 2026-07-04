@@ -11,7 +11,7 @@
         value: 'BookingSupplementID'
     }
 }
-annotate entity ZI_BOOKING_SUPPL_0341
+annotate entity ZC_BOOKSUPL_0341
     with 
 {
     @UI.facet: [ {

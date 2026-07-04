@@ -34,6 +34,6 @@ as projection on ZI_TRAVEL_0341
     _Booking: redirected to composition child ZC_BOOKING_0341,
     _Currency,
     _Customer,
-    _Logs,
+    _Logs: redirected to composition child zc_log_0341,
     _OverallStatus
 }
