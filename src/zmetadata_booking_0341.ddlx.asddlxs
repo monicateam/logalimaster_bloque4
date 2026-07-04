@@ -1,0 +1,106 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: {
+    typeName: 'Booking',
+    typeNamePlural: 'Bookings',
+    title: {
+        type: #STANDARD,
+        value: 'BookingID'
+    },
+    description: {
+        type: #STANDARD,
+        value: 'BookingDate'
+    }
+}
+annotate entity ZI_BOOKING_0341
+    with 
+{
+    @UI.facet: [ {
+    label: 'Detalle', 
+    id: 'GeneralInfo', 
+    purpose: #STANDARD, 
+    position: 10 , 
+    type: #IDENTIFICATION_REFERENCE
+  },
+  {  id: 'Supplements',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Supplements',
+      position: 20,
+      targetElement: '_BookingSupplement' }
+  
+  ]
+
+
+    @UI.identification: [ {
+    position: 10 
+  } ]
+     @UI.lineItem: [ {
+    position: 10 
+  } ]
+    BookingID;
+     @UI.lineItem: [ {
+    position: 20 
+  } ]
+  @UI.identification: [ {
+    position: 20 
+  } ]
+    BookingDate;
+    @UI.identification: [ {
+    position: 30 
+  } ]
+     @UI.lineItem: [ {
+    position: 30 
+  } ]
+    CustomerID;
+    @UI.identification: [ {
+    position: 40 
+  } ]
+     @UI.lineItem: [ {
+    position: 40 
+  } ]
+
+    CarrierID;
+    @UI.identification: [ {
+    position: 50 
+  } ]
+     @UI.lineItem: [ {
+    position: 50 
+  } ]
+    ConnectionID;
+    @UI.identification: [ {
+    position: 60 
+  } ]
+     @UI.lineItem: [ {
+    position: 60 
+  } ]
+    FlightDate;
+    @UI.identification: [ {
+    position: 70 
+  } ]
+     @UI.lineItem: [ {
+    position: 70 
+  } ]
+    FlightPrice;
+    @UI.identification: [ {
+    position: 80 
+  } ]
+     @UI.lineItem: [ {
+    position: 80 
+  } ]
+    CurrencyCode;
+    @UI.identification: [ {
+    position: 90 
+  } ]
+     @UI.lineItem: [ {
+    position: 90
+  } ]
+    BookingStatus;
+    @UI.identification: [ {
+    position: 100 
+  } ]
+     @UI.lineItem: [ {
+    position: 100 
+  } ]
+    LastChangedAt;
+    
+}

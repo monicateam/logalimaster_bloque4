@@ -1,0 +1,137 @@
+managed;
+strict (2);
+with draft;
+
+define behavior for ZI_TRAVEL_0341 alias Travel
+implementation in class zbp_i_travel_0341 unique
+persistent table ztb_travel_0341
+draft table ztb_travel_0341d
+lock master total etag LastChangedAt
+authorization master ( instance )
+etag master LastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( mandatory ) AgencyID, OverallStatus, BookingFee, CurrencyCode;
+  field ( readonly ) LastChangedAt, LastChangedBy, CreatedBy, CreatedAt;
+  field ( features : instance ) TravelID;
+  association _Booking { create; with draft; }
+  association _Logs { create; }
+
+  draft action Resume;
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft determine action Prepare;
+
+  action ( features : instance ) acceptTravel result [1] $self;
+  action ( features : instance ) rejectTravel result [1] $self;
+  action createTravelByTemplate result [1] $self;
+
+  validation validateCustomer on save { field CustomerID; }
+  validation validateDates on save { field BeginDate, EndDate; }
+  validation validateStatus on save { field OverallStatus; }
+
+  mapping for ztb_travel_0341
+    {
+      TravelID      = travel_id;
+      AgencyID      = agency_id;
+      CustomerID    = customer_id;
+      BeginDate     = begin_date;
+      endDate       = end_date;
+      bookingfee    = booking_fee;
+      totalprice    = total_price;
+      currencycode  = currency_code;
+      description   = description;
+      overallstatus = overall_status;
+      createdby     = created_by;
+      createdat     = created_at;
+      lastchangedby = last_changed_by;
+      lastchangedat = last_changed_at;
+    }
+}
+
+define behavior for ZI_BOOKING_0341 alias Booking
+implementation in class zbp_i_booking_0341 unique
+persistent table ztb_booking_0341
+draft table ztb_bking_0341_d
+lock dependent by _TravelHeader
+authorization dependent by _TravelHeader
+etag master lastchangedAt
+{
+  update;
+  delete;
+  field ( mandatory ) CarrierID, connectionID, flightdate, bookingStatus;
+  field ( readonly ) TravelID;
+  association _TravelHeader { with draft; }
+  association _BookingSupplement { create; with draft; }
+  validation validateStatus on save { field bookingStatus; }
+
+  determination calculateTotalFlightPrice on modify { field FlightPrice; }
+  determination calculateTotalSupplmPrice on modify { field CurrencyCode; }
+  mapping for ztb_booking_0341 {
+    travelId = travel_id;
+    bookingid = booking_id;
+    bookingdate = booking_date;
+    customerid = customer_id;
+    carrierid = carrier_id;
+    connectionid = connection_id;
+    flightdate = flight_date;
+    flightprice = flight_price;
+    currencycode = currency_code;
+    bookingstatus = booking_status;
+    lastchangedat = last_changed_at;
+  }
+}
+
+define behavior for ZI_BOOKING_SUPPL_0341 alias BookingSupplement
+implementation in class zbp_i_booksuppl unique
+persistent table ztb_booksupl0341
+draft table ztb_bkspl0341_d
+lock dependent by _TravelHeader
+authorization dependent by _TravelHeader
+etag master LastChangedAt
+{
+  update;
+  delete;
+  field ( readonly ) TravelID, BookingID, BookingSupplementID;
+  association _TravelHeader { with draft; }
+  association _Booking { with draft; }
+
+  determination calculateTotalSupplimPrice on modify { field Price, CurrencyCode;}
+  mapping for ztb_booksupl0341 {
+    travelid = travel_id;
+    bookingid = booking_id;
+    BookingSupplementID = booking_supplement_id;
+    SupplementID = supplement_id;
+    price = price;
+    CurrencyCode = currency_code;
+    LastChangedAt = last_changed_at;
+  }
+}
+
+define behavior for ZI_LOG_0341 //alias <alias_name>
+implementation in class zbp_i_travellog_0341 unique
+persistent table ztb_log_0341_d
+draft table ztb_log_0341_d
+lock dependent by _TravelHeader
+authorization dependent by _TravelHeader
+etag master CreatedAt
+{
+  update;
+  delete;
+  field ( numbering: managed ) ChangeID;
+  field ( readonly ) TravelId, createdat, ChangedFieldName, ChangingOperation, UserMod, ChangedValue;
+  association _TravelHeader;
+
+  mapping for ztb_log_0341  {
+    changeid = change_id;
+    travelid = travel_id;
+    ChangingOperation = changing_operation;
+    ChangedFieldName = changed_field_name;
+    ChangedValue = changed_value;
+    CreatedAt = created_at;
+    usermod = user_mod;
+  }
+}

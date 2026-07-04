@@ -1,0 +1,78 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: {
+    typeName: 'Log',
+    typeNamePlural: 'Log',
+    title: {
+        type: #STANDARD,
+        value: 'ChangeID'
+    },
+    description: {
+        type: #STANDARD,
+        value: 'TravelID'
+    }
+}
+annotate entity ZI_LOG_0341
+    with 
+{
+    @UI.facet: [ {
+    label: 'Detalle', 
+    id: 'GeneralInfo', 
+    purpose: #STANDARD, 
+    position: 10 , 
+    type: #IDENTIFICATION_REFERENCE
+  }
+  
+  ]
+
+
+    @UI.identification: [ {
+    position: 10 
+  } ]
+     @UI.lineItem: [ {
+    position: 10 
+  } ]
+    ChangeID;
+    @UI.identification: [ {
+    position: 20 
+  } ]
+     @UI.lineItem: [ {
+    position: 20 
+  } ]
+    TravelID;
+    @UI.identification: [ {
+    position: 30 
+  } ]
+     @UI.lineItem: [ {
+    position: 30 
+  } ]
+    ChangingOperation;
+    @UI.identification: [ {
+    position: 40 
+  } ]
+     @UI.lineItem: [ {
+    position: 40 
+  } ]
+    ChangedFieldName;
+    @UI.identification: [ {
+    position: 50 
+  } ]
+     @UI.lineItem: [ {
+    position: 50 
+  } ]
+    ChangedValue;
+    @UI.identification: [ {
+    position: 60 
+  } ]
+     @UI.lineItem: [ {
+    position: 60 
+  } ]
+    CreatedAt;
+    @UI.identification: [ {
+    position: 70 
+  } ]
+     @UI.lineItem: [ {
+    position: 70 
+  } ]
+    UserMod;
+    
+}

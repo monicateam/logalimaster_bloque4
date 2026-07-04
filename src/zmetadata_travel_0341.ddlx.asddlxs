@@ -1,0 +1,153 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: {
+    typeName: 'Viaje',
+    typeNamePlural: 'Viaje',
+    title: {
+        type: #STANDARD,
+        value: 'TravelID'
+    },
+    description: {
+        type: #STANDARD,
+        value: 'AgencyID'
+    }
+}
+annotate entity ZI_TRAVEL_0341
+    with 
+{
+    @EndUserText.label: 'Id Viaje'
+  @UI.facet: [ {
+    label: 'Información viaje', 
+    id: 'GeneralInfo', 
+    purpose: #STANDARD, 
+    position: 10 , 
+    type: #IDENTIFICATION_REFERENCE
+  },
+  {  id: 'Bookings',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Bookings',
+      position: 20,
+      targetElement: '_Booking' },
+      {  id: 'Logs',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Logs',
+      position: 30,
+      targetElement: '_Logs' }
+  
+  ]
+  @UI.lineItem: [
+  { type: #FOR_ACTION, dataAction: 'acceptTravel', label: 'Aceptar viaje' },
+  { type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'rechazar viaje' },
+  { type: #FOR_ACTION, dataAction: 'createTravelByTemplate', label: 'crear viaje plantilla' },
+  {
+    position: 10 
+  }
+  ]
+  @UI.identification: [ {
+    position: 10 
+  } ]
+
+  @UI.selectionField: [ {
+    position: 10 
+  } ]
+    TravelID;
+    @UI.identification: [ {
+    position: 20 
+  } ]
+  @UI.lineItem: [ {
+    position: 20 
+  } ]
+  @UI.selectionField: [ {
+    position: 20 
+  } ]
+    AgencyID;
+    @UI.identification: [ {
+    position: 30 
+  } ]
+  @UI.lineItem: [ {
+    position: 30 
+  } ]
+  @UI.selectionField: [ {
+    position: 30 
+  } ]
+    CustomerID;
+    @UI.identification: [ {
+    position: 40 
+  } ]
+  @UI.lineItem: [ {
+    position: 40 
+  } ]
+    BeginDate;
+    @UI.identification: [ {
+    position: 50 
+  } ]
+  @UI.lineItem: [ {
+    position: 50 
+  } ]
+    EndDate;
+    @UI.identification: [ {
+    position: 60 
+  } ]
+  @UI.lineItem: [ {
+    position: 60 
+  } ]
+    BookingFee;
+    @UI.identification: [ {
+    position: 70 
+  } ]
+  @UI.lineItem: [ {
+    position: 70 
+  } ]
+    TotalPrice;
+    @UI.identification: [ {
+    position: 80 
+  } ]
+  @UI.lineItem: [ {
+    position: 80 
+  } ]
+    CurrencyCode;
+    @UI.identification: [ {
+    position: 90 
+  } ]
+  @UI.lineItem: [ {
+    position: 90 
+  } ]
+    Description;
+    @UI.identification: [ {
+    position: 100 
+  } ]
+  @UI.lineItem: [ {
+    position: 100 
+  } ]
+    OverallStatus;
+    @UI.identification: [ {
+    position: 110 
+  } ]
+  @UI.lineItem: [ {
+    position: 120 
+  } ]
+    CreatedBy;
+    @UI.identification: [ {
+    position: 130 
+  } ]
+  @UI.lineItem: [ {
+    position: 130 
+  } ]
+    CreatedAt;
+    @UI.identification: [ {
+    position: 140 
+  } ]
+  @UI.lineItem: [ {
+    position: 140 
+  } ]
+    LastChangedBy;
+    @UI.identification: [ {
+    position: 150 
+  } ]
+  @UI.lineItem: [ {
+    position: 150 
+  } ]
+    LastChangedAt;
+    
+}
